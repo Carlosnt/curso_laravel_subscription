@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Subscription\SubscriptionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -12,9 +13,15 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::get('subscriptions/resume', [SubscriptionController::class, 'resume'])->name('subscriptions.resume');
+Route::get('subscriptions/cancel', [SubscriptionController::class, 'cancel'])->name('subscriptions.cancel');
+Route::get('subscriptions/account', [SubscriptionController::class, 'account'])->name('subscriptions.account');
+Route::post('subscriptions/store', [SubscriptionController::class, 'store'])->name('subscriptions.store');
+Route::get('subscriptions/checkout', [SubscriptionController::class, 'checkout'])->name('subscriptions.checkout');
+Route::get('subscriptions/premium', [SubscriptionController::class, 'premium'])->name('subscriptions.premium')->middleware('subscribed');
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('site.home');
 });
 
 Route::get('/dashboard', function () {
