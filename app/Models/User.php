@@ -8,6 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Cashier\Billable;
 use Laravel\Sanctum\HasApiTokens;
+use Carbon\Carbon;
 
 class User extends Authenticatable
 {
@@ -42,4 +43,18 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function getAccessEndAttribute()
+    {
+        $accessEndAt = $this->subscription('default')->ends_at;
+
+        return Carbon::make($accessEndAt)->format("d/m/Y à\s H:i:s");
+    }
+
+    public function plan()
+    {
+        $stripePlan = $this->subscription('default')->stripe_plan;
+
+        return Plan::where('stripe_id', $stripePlan)->first();
+    }
 }

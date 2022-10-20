@@ -9,16 +9,16 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 bg-white border-b border-gray-200">
-                    @if ($subscription)
-                        <p><strong>Plano:</strong> {{ $user->plan()->name }}</p> <br>
+                    @if (Auth::user()->subscription('default'))
+{{--                        <p><strong>Plano:</strong> {{ $user->plan()->name }}</p> <br>--}}
 
-                        @if ($subscription->cancelled() && $subscription->onGracePeriod())
+                        @if (Auth::user()->subscription('default')->onGracePeriod())
                             <a href="{{ route('subscriptions.resume') }}" class="px-5 py-2 border-green-500 border text-green-500 rounded transition duration-300 hover:bg-green-700 hover:text-white focus:outline-none">
                                 Reativar Assinatura
                             </a>
 
                             Seu acesso vai até: {{ $user->access_end }}
-                        @elseif (!$subscription->cancelled())
+                        @else
                             <a href="{{ route('subscriptions.cancel') }}" class="px-5 py-2 border-red-500 border text-red-500 rounded transition duration-300 hover:bg-red-700 hover:text-white focus:outline-none">
                                 Cancelar Assinatura
                             </a>
@@ -50,8 +50,8 @@
                         <tbody>
                         @foreach ($invoices as $invoice)
                             <tr>
-                                <td class="px-6 py-4 border-b text-sm">{{ $invoice->date()->toFormattedDateString() }}</td>
-                                <td class="px-6 py-4 border-b text-sm">{{ $invoice->total() }}</td>
+                                <td class="px-6 py-4 border-b text-sm"> {{ $invoice->date()->toFormattedDateString() }}</td>
+                                <td class="px-6 py-4 border-b text-sm"> {{ $invoice->total() }}</td>
                                 <td class="px-6 py-4 border-b text-sm">
                                     <a href="{{ route('subscriptions.invoice.download', $invoice->id) }}" class="px-5 py-2 border-blue-500 border text-blue-500 rounded transition duration-300 hover:bg-blue-700 hover:text-white focus:outline-none">
                                         Baixar

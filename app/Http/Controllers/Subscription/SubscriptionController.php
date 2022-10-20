@@ -21,13 +21,15 @@ class SubscriptionController extends Controller
 
         return view('subscriptions.index',[
             'intent' => auth()->user()->createSetupIntent(),
+            'plan' => session('plan'),
         ]);
     }
 
     public function store(Request $request)
     {
+        $plan = session('plan');
         $request->user()
-            ->newSubscription('default', 'price_1Lm1p3IijXnRneCvUHxVx6VN')
+            ->newSubscription('default', $plan->stripe_id)
             ->create($request->token);
 
         return redirect()->route('subscriptions.premium');
@@ -40,11 +42,14 @@ class SubscriptionController extends Controller
 
     public function account()
     {
+        $user = auth()->user();
         $invoices = auth()->user()->invoices();
         $subscription = Auth::user()->subscription('default');
+
         return view('subscriptions.account',[
             'invoices' => $invoices,
-            'subscription' =>$subscription
+            'subscription' =>$subscription,
+            'user' => $user
         ]);
     }
 
