@@ -53,7 +53,7 @@ class User extends Authenticatable
 
     public function plan()
     {
-        $stripePlan = $this->subscription('default')->stripe_plan;
+        $stripePlan = $this->subscription('default')->stripe_price;
 
         return Plan::where('stripe_id', $stripePlan)->first();
     }

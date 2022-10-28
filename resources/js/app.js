@@ -1,8 +1,11 @@
 import './bootstrap';
 import '../css/app.css';
 
-import Alpine from 'alpinejs';
+import { createApp } from 'vue/dist/vue.esm-bundler';
+import contactComponent from "./components/Contact.vue";
 
-window.Alpine = Alpine;
+const app = createApp({});
+app.component('contact', contactComponent)
+app.mount('#app');
 
-Alpine.start();
+
